@@ -77,5 +77,8 @@
   });
 </script>
 <script type="module">
+  if(window.Testee) {
+    Testee.init();
+  }
   mocha.run();
 </script>
