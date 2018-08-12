@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<title>bindstate basic tests</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/4.0.1/mocha.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/4.0.1/mocha.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chai/4.1.2/chai.js"></script>
+
+<main>
+  <div id="mocha"></div>
+  <div id="host"></div>
+</main>
+
+<script>
+  mocha.setup('bdd');
+</script>
+<script type="module">
+  import '../index.js';
+  import { createTemplate, mount, delay } from './helpers.js';
+
+  const assert = chai.assert;
+
+  describe('Strings', () => {
+    afterEach(() => { host.innerHTML = ''; });
+
+    it('Binds to a child', () => {
+      mount(createTemplate(`
+        <bind-state data-name="Matthew">
+          <span data-bind="name"></span>  
+        </bind-state>
+      `));
+
+      let store = host.querySelector('bind-state');
+      let span = host.querySelector('span');
+
+      assert.equal(span.textContent, 'Matthew', 'Bound to initial value');
+
+      store.set('name', 'Wilbur');
+      assert.equal(span.textContent, 'Wilbur', 'Rebound when the value changes');
+    });
+  });
+
+  describe('Booleans', () => {
+    afterEach(() => { host.innerHTML = ''; });
+
+    it('Binds to a truthy boolean', () => {
+      mount(createTemplate(`
+        <bind-state data-admin>
+          <input type="checkbox" data-bind="admin">
+        <bind-state>
+      `));
+
+      let store = host.querySelector('bind-state');
+      let input = host.querySelector('input');
+
+      assert.equal(input.checked, true, 'It is initially checked');
+
+      store.set('admin', false);
+      assert.equal(input.checked, false, 'Now unchecked');
+    });
+
+    it('Binds to a falsey boolean', () => {
+      mount(createTemplate(`
+        <bind-state data-admin!>
+          <input type="checkbox" data-bind="admin">
+        <bind-state>
+      `));
+
+      let store = host.querySelector('bind-state');
+      let input = host.querySelector('input');
+
+      assert.equal(input.checked, false, 'It is initially unchecked');
+
+      store.set('admin', true);
+      assert.equal(input.checked, true, 'Now checked');
+    });
+  });
+</script>
+<script type="module">
+  mocha.run();
+</script>

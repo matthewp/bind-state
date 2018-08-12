@@ -1,6 +1,6 @@
 import customAttributes from 'https://unpkg.com/custom-attributes@1.1.3/index.js';
 
-class StateStore extends HTMLElement {
+class Store extends HTMLElement {
   constructor() {
     super();
     this.store = new Map();
@@ -15,6 +15,11 @@ class StateStore extends HTMLElement {
       this.store.set(name, value);
       this._notify(name);
     }
+  }
+
+  set(prop, value) {
+    this.store.set(prop, value);
+    this._notify(prop);
   }
 
   connectedCallback() {
@@ -73,4 +78,4 @@ class DataBind {
 }
 
 customAttributes.define('data-bind', DataBind);
-customElements.define('state-store', StateStore);
+customElements.define('bind-state', Store);
