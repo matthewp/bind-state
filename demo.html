@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+<title>State store demo</title>
+
+<script type="module" src="./index.js"></script>
+
+<state-store data-name="World">
+  
+  <input type="text"
+    data-bind="name"
+    data-bind-on="keyup"
+    data-bind-from="value">
+
+  <div>Name: <span data-bind="name"></span></div>
+
+</state-store>
