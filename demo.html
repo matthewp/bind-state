@@ -4,13 +4,17 @@
 
 <script type="module" src="./index.js"></script>
 
-<state-store data-name="World">
+<state-store data-name="World" data-admin!>
   
   <input type="text"
     data-bind="name"
     data-bind-on="keyup"
     data-bind-from="value">
 
+  <input type="checkbox" data-bind-from="checked" data-bind="admin" data-bind-on="change">
+
   <div>Name: <span data-bind="name"></span></div>
+
+  <div>Is Administrator: <span data-bind="admin"></span></div>
 
 </state-store>

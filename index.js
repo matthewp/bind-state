@@ -6,6 +6,10 @@ class StateStore extends HTMLElement {
     this.store = new Map();
 
     for(let [name, value] of Object.entries(this.dataset)) {
+      if(name.endsWith('!')) {
+        name = name.substr(0, name.length - 1);
+        value = false;
+      }
       this.store.set(name, value);
       this._notify(name);
     }
@@ -25,11 +29,19 @@ class StateStore extends HTMLElement {
     let value = this.store.get(prop);
     for(let el of this.querySelectorAll(`[data-bind="${prop}"]`)) {
       switch(el.nodeName) {
-        case 'SPAN':
+        case 'INPUT':
+          switch(el.type) {
+            case 'checkbox':
+              el.checked = value;
+              break;
+            default:
+              el.value = value;
+              break;
+          }
+          break;
+        default:
           el.textContent = value;
           break;
-        case 'INPUT':
-          el.value = value;
       }
     }
   }
