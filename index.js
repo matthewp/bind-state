@@ -9,6 +9,8 @@ class StateStore extends HTMLElement {
       if(name.endsWith('!')) {
         name = name.substr(0, name.length - 1);
         value = false;
+      } else if(value === '') {
+        value = true;
       }
       this.store.set(name, value);
       this._notify(name);
